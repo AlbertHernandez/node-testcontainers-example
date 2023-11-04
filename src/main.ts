@@ -5,7 +5,7 @@ import express from "express";
 import { config } from "./config";
 import { healthRouter } from "./health/health-router";
 
-function boostrap() {
+async function boostrap() {
   const app = express();
 
   app.use(express.json());

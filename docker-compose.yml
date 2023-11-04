@@ -10,6 +10,8 @@ services:
         - PORT=${PORT}
     ports:
       - "${PORT}:${PORT}"
+    depends_on:
+      - redis
 
   my-service-dev:
     container_name: my-service-dev
@@ -26,6 +28,19 @@ services:
     volumes:
       - .:/project
       - node_modules:/project/node_modules/
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    restart: unless-stopped
+    image: redis:7.2-alpine3.18
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
 
 volumes:
   node_modules:
+  cache:
+    driver: local
