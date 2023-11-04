@@ -1,18 +1,29 @@
+import { GenericContainer, StartedTestContainer } from "testcontainers";
+
 import { RedisCacheClient } from "../../src/cache-client/redis-cache-client";
-import { config } from "../../src/config";
 
 describe("RedisCacheClient", () => {
   let redisCacheClient: RedisCacheClient;
+  let container: StartedTestContainer;
 
   beforeAll(async () => {
+    const port = 6379;
+    container = await new GenericContainer("redis")
+      .withExposedPorts(port)
+      .start();
+
+    const redisUrl = `redis://${container.getHost()}:${container.getMappedPort(
+      port,
+    )}`;
     redisCacheClient = new RedisCacheClient({
-      url: config.redis.url,
+      url: redisUrl,
     });
     await redisCacheClient.connect();
   });
 
   afterAll(async () => {
     await redisCacheClient.disconnect();
+    await container.stop();
   });
 
   it("should indicate is connected after connecting", async () => {
