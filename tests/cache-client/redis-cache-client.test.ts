@@ -19,7 +19,7 @@ describe("RedisCacheClient", () => {
       url: redisUrl,
     });
     await redisCacheClient.connect();
-  });
+  }, 10000);
 
   afterAll(async () => {
     await redisCacheClient.disconnect();
