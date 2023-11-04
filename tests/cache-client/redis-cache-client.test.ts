@@ -34,7 +34,7 @@ describe("RedisCacheClient", () => {
   });
 
   it("should return the object value when was created previously", async () => {
-    const key = "key-object";
+    const key = "keyObject";
     const value = {
       name: "value",
     };
